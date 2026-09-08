@@ -1,5 +1,5 @@
 [project]
-name = "installer"
+name = "tuizzard"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -12,7 +12,7 @@ dependencies = [
 ]
 
 [project.scripts]
-installer = "installer:main"
+tuizzard = "tuizzard:main"
 
 [build-system]
 requires = ["uv_build>=0.12.10,<0.13.0"]
