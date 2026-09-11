@@ -1,0 +1,70 @@
+from textual.app import App, ComposeResult
+from textual.widgets import Header, Footer, Static, RichLog, Collapsible, ListView, ListItem, Label, SelectionList, Rule, OptionList
+from textual.containers import VerticalGroup
+from textual import events
+
+
+def fetch_file():
+    path = "./data/"
+    os_path = "os.text"
+    de_path = "de.text"
+    gs_path = "gs.text"
+    comp_path = "comp.text"
+    wm_path = "wm.text"
+    pan_path = "pan.text"
+    lau_path = "lau.text"
+    term = "term.text"
+    fe = "fe.text"
+    edt = "edt.text"
+
+    with open("./data/os.text", "r", encoding="utf-8") as f:
+        o_list = [li for li in f]
+        yield OptionList(*o_list)
+
+
+os_label = Label("OS")
+de_label = Label("Desktop-Enviroment")
+gs_label = Label("Grafical-Server")
+comp_label = Label("Compositor")
+wm_label = Label("Window-Manager")
+pan_label = Label("Panel")
+lau_label = Label("Launcher")
+
+
+class Content(VerticalGroup):
+    def compose(self):
+        yield os_label
+        with ListView(name=os_label):
+            with open("./data/os.text", "r", encoding="utf-8") as f:
+                l = f.read().splitlines()
+                os = [Label(i) for i in l]
+                for l in os:
+                    yield ListItem(l)
+        # yield self.query_one(RichLog()).write(events.Key)
+        yield de_label
+        with ListView(name=de_label):
+            yield ListItem(Label("Debian"))
+            yield ListItem(Label("Arch",))
+        Rule()
+        yield gs_label
+        with ListView(name=gs_label):
+            yield ListItem(Label("Debian"))
+            yield ListItem(Label("Arch",))
+        yield comp_label
+        with ListView(name=comp_label):
+            yield ListItem(Label("Debian"))
+            yield ListItem(Label("Arch",))
+
+
+class MyApp(App):
+    CSS_PATH = "tuizzard.tcss"
+
+    def compose(self):
+        yield Header()
+        yield Footer()
+        yield Content()
+
+
+if __name__ == "__main__":
+    app = MyApp()
+    app.run()

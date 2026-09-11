@@ -1,0 +1,81 @@
+from textual.app import App, ComposeResult
+from textual.widgets import Static, Footer, Header, Button, ListView, ListItem, Label, SelectionList, Placeholder, RadioButton, RadioSet, Rule, Collapsible, Select
+from textual.containers import Container, HorizontalGroup, VerticalScroll, VerticalGroup
+from textual import events, on
+from textual.reactive import reactive
+from textual.message import Message
+
+
+class Box(Static):
+
+    def compose(self) -> ComposeResult:
+        with Collapsible(title="OS"):
+            yield ListView(ListItem(Label("Arch-BTW")), ListItem(Label("Debian"), disabled=True))
+
+        yield Rule(line_style="heavy")
+
+        with Collapsible(title="Mode",id="top"):
+            yield ListView(ListItem(Label("Desktop")), ListItem(Label("Server")),)
+        # yield RadioButton("GUI")
+        with Collapsible(title="Desktop Enviroment"):
+            yield ListView(ListItem(Label("Custom")), ListItem(Label("KDE plasma")), ListItem(Label("Mint")), ListItem(Label("GNOME")),)
+        with Collapsible(title="Display Server"):
+            yield ListView(ListItem(Label("X11")), ListItem(Label("Wayland")),)
+        with Collapsible(title="Window-Manager"):
+            yield ListView(ListItem(Label("i3wm")), ListItem(Label("bspwm")), ListItem(Label("awesome")), ListItem(Label("xmonad")), ListItem(Label("Hyprland")), ListItem(Label("Sway")))
+        with Collapsible(title="Compositor"):
+            yield ListView(ListItem(Label("Picon")), ListItem(Label("xcompmgr")),)
+        with Collapsible(title="Panel"):
+            yield ListView(ListItem(Label("Waybar")), ListItem(Label("Yabar")), ListItem(Label("Polybar")), ListItem(Label("i3status")),)
+        with Collapsible(title="Terminal"):
+            yield ListView(ListItem(Label("Alacrity")), ListItem(Label("Ghosty")),)
+        with Collapsible(title="File-Explorer"):
+            yield ListView(ListItem(Label("Nautilus")), ListItem(Label("Dolphin")), ListItem(Label("Ranger(tui)")))
+        with Collapsible(title="Text-editor"):
+            yield ListView(ListItem(Label("NeoVim")), ListItem(Label("Nano")),)
+        with Collapsible(title="Launcher"):
+            yield ListView(ListItem(Label("Rofi")), ListItem(Label("Wofi")), ListItem(Label("dmenu")), ListItem(Label("bemenu")),)
+
+        yield Rule(line_style="heavy")
+
+        with Collapsible(title="Essentials"):
+            yield SelectionList[int](("keybinds", 2), ("allias", 3), ("bashrc", 4), ("inputrc", 5), ("uv", 6),)
+        with Collapsible(title="Apps"):
+            yield ListView(ListItem(Label("Tailscale")), ListItem(Label("Herdr")), ).focus()
+        with Collapsible(title="Others"):
+            yield ListView(ListItem(Label("i3wm")), ListItem(Label("bspwm")), ListItem(Label("awesome")), ListItem(Label("xmonad")), ListItem(Label("Hyprland")), ListItem(Label("Sway")))
+        # notificationDaemon
+        # AudioEngine
+        # WallpaperEngine
+        # ##############################
+        # Desktop Environment Integration:
+        # Polkit Agent, XDG Desktop Portals,Display Manager (Optional)
+        # #######
+        # GTK Themes
+        
+    def on_list_view_selected(self, event:ListView.Selected):
+        top=self.query_one("#top",expect_type=Collapsible)
+        for widget in self.query():
+            if widget== Collapsible:
+                self.exit()
+
+class tuizzardApp(App):
+
+    BINDINGS = [("d", "toggle_dark", "Toggle dark mode")]
+    CSS_PATH = "tuizzard.tcss"
+
+    def compose(self) -> ComposeResult:
+        yield Header(name="Twizzard")
+        yield Footer()
+        yield Box()
+
+    def action_toggle_dark(self) -> None:
+        """An action to toggle dark mode."""
+        self.theme = (
+            "textual-dark" if self.theme == "textual-light" else "textual-light"
+        )
+
+
+if __name__ == "__main__":
+    app = tuizzardApp()
+    app.run()

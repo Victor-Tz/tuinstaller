@@ -1,0 +1,28 @@
+Grid {
+  layout: grid;
+  grid-size: 6 4;
+  border: cadetblue;
+  margin: 0;
+  padding: 0;
+}
+
+.box {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: black;
+  row-span: 2;
+}
+
+
+.gs-comp .box {
+  row-span: 1;
+}
+
+.log {
+  column-span: 3;
+}
+
+.disabled{
+  display:none;
+}

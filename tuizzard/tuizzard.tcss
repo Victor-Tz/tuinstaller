@@ -1,0 +1,13 @@
+Screen{
+    layout : grid;
+       grid-size : 4;
+  }
+OptionList{
+    height:100%;
+    width:100%;
+    border:solid blue;
+  }
+
+*{
+    border:white;
+  }
